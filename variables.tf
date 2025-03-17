@@ -63,20 +63,22 @@ variable "tags" {
 
 variable "sg_ingress_rules" {
   type = list(object({
+    description = string
     from_port   = number
     to_port     = number
-    protocol    = string
-    cidr_block  = string
-    description = string
+    ip_protocol = string
+    cidr_ipv4   = string
   }))
+  default = []
 }
 
 variable "sg_egress_rules" {
   type = list(object({
+    description = string
     from_port   = number
     to_port     = number
-    protocol    = string
-    cidr_block  = string
-    description = string
+    ip_protocol = string
+    cidr_ipv4   = string
   }))
+  default = []
 }
