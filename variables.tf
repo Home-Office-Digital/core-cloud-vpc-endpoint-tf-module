@@ -60,3 +60,25 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "sg_ingress_rules" {
+  type = list(object({
+    description = string
+    from_port   = number
+    to_port     = number
+    ip_protocol = string
+    cidr_ipv4   = string
+  }))
+  default = []
+}
+
+variable "sg_egress_rules" {
+  type = list(object({
+    description = string
+    from_port   = number
+    to_port     = number
+    ip_protocol = string
+    cidr_ipv4   = string
+  }))
+  default = []
+}
