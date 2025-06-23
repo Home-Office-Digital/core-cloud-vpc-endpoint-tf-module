@@ -3,7 +3,7 @@ resource "aws_vpc_endpoint" "this" {
   service_name      = var.service_name
   vpc_endpoint_type = "Interface"
 
-  security_group_ids  = var.security_group_ids != [] ? var.security_group_ids : aws_security_group.this[0].id
+  security_group_ids  = length(var.security_group_ids) != 0 ? var.security_group_ids : aws_security_group.this[0].id
   subnet_ids          = var.subnet_ids
   private_dns_enabled = var.managed_private_dns_enabled
 
@@ -50,13 +50,13 @@ resource "aws_route53_record" "this" {
 }
 
 resource "aws_security_group" "this" {
-  count  = var.security_group_ids == [] ? 1 : 0
+  count  = length(var.security_group_ids) == 0 ? 1 : 0
   name   = "${var.vpc_endpoint_name}-sg"
   vpc_id = var.vpc_id
 }
 
 resource "aws_vpc_security_group_ingress_rule" "ingress_rules" {
-  count             = var.security_group_ids == [] ? length(var.sg_ingress_rules) : 0
+  count             = length(var.security_group_ids) == 0 ? length(var.sg_ingress_rules) : 0
   security_group_id = aws_security_group.this[0].id
   description       = var.sg_egress_rules[count.index].description
   from_port         = var.sg_ingress_rules[count.index].from_port
@@ -67,7 +67,7 @@ resource "aws_vpc_security_group_ingress_rule" "ingress_rules" {
 }
 
 resource "aws_vpc_security_group_egress_rule" "egress_rules" {
-  count             = var.security_group_ids == [] ? length(var.sg_egress_rules) : 0
+  count             = length(var.security_group_ids) == 0 ? length(var.sg_egress_rules) : 0
   security_group_id = aws_security_group.this[0].id
   description       = var.sg_egress_rules[count.index].description
   from_port         = var.sg_egress_rules[count.index].from_port
