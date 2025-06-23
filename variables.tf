@@ -86,5 +86,5 @@ variable "sg_egress_rules" {
 variable "sg_description" {
   description = "Description of security group"
   type        = string
-  default     = ""
+  default     = "${var.vpc_endpoint_name}-sg"
 }
