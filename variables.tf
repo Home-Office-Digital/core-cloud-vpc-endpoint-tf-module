@@ -61,6 +61,12 @@ variable "tags" {
   default     = {}
 }
 
+variable "sg_description" {
+  description = "Description of security group"
+  type        = string
+  default     = "${var.vpc_endpoint_name}-sg"
+}
+
 variable "sg_ingress_rules" {
   type = list(object({
     description = string
@@ -83,8 +89,4 @@ variable "sg_egress_rules" {
   default = []
 }
 
-variable "sg_description" {
-  description = "Description of security group"
-  type        = string
-  default     = "${var.vpc_endpoint_name}-sg"
-}
+
