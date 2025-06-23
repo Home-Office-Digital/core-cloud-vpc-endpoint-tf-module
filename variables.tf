@@ -64,7 +64,7 @@ variable "tags" {
 variable "sg_description" {
   description = "Description of security group"
   type        = string
-  default     = "${var.vpc_endpoint_name}-sg"
+  default     = "VPCe sg"
 }
 
 variable "sg_ingress_rules" {
