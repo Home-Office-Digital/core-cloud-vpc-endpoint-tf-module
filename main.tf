@@ -50,9 +50,10 @@ resource "aws_route53_record" "this" {
 }
 
 resource "aws_security_group" "this" {
-  count  = length(var.security_group_ids) == 0 ? 1 : 0
-  name   = "${var.vpc_endpoint_name}-sg"
-  vpc_id = var.vpc_id
+  count       = length(var.security_group_ids) == 0 ? 1 : 0
+  name        = "${var.vpc_endpoint_name}-sg"
+  description = var.sg_description
+  vpc_id      = var.vpc_id
 }
 
 resource "aws_vpc_security_group_ingress_rule" "ingress_rules" {

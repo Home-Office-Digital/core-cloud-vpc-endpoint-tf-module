@@ -82,3 +82,9 @@ variable "sg_egress_rules" {
   }))
   default = []
 }
+
+variable "sg_description" {
+  description = "Description of security group"
+  type        = string
+  default     = ""
+}
