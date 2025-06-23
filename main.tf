@@ -3,7 +3,7 @@ resource "aws_vpc_endpoint" "this" {
   service_name      = var.service_name
   vpc_endpoint_type = "Interface"
 
-  security_group_ids  = length(var.security_group_ids) != 0 ? var.security_group_ids : aws_security_group.this[0].id
+  security_group_ids  = length(var.security_group_ids) != 0 ? var.security_group_ids : [aws_security_group.this[0].id]
   subnet_ids          = var.subnet_ids
   private_dns_enabled = var.managed_private_dns_enabled
 
