@@ -61,6 +61,12 @@ variable "tags" {
   default     = {}
 }
 
+variable "sg_description" {
+  description = "Description of security group"
+  type        = string
+  default     = "VPCe sg"
+}
+
 variable "sg_ingress_rules" {
   type = list(object({
     description = string
@@ -82,3 +88,5 @@ variable "sg_egress_rules" {
   }))
   default = []
 }
+
+
