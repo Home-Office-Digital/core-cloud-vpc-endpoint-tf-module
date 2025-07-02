@@ -80,12 +80,13 @@ variable "sg_ingress_rules" {
 
 variable "sg_egress_rules" {
   type = list(object({
-    description = optional(string)
-    from_port   = optional(number)
-    to_port     = optional(number)
+    description = string
+    from_port   = number
+    to_port     = number
     ip_protocol = string
     cidr_ipv4   = string
   }))
+  default = []
 }
 
 
