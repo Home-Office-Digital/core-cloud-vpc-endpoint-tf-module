@@ -68,11 +68,11 @@ resource "aws_vpc_security_group_ingress_rule" "ingress_rules" {
 }
 
 resource "aws_vpc_security_group_egress_rule" "egress_rules" {
-  count             = length(var.security_group_ids) == 0 ? length(var.sg_egress_rules) : 0
+  count = length(var.security_group_ids) == 0 ? length(var.sg_egress_rules) : 0
   security_group_id = aws_security_group.this[0].id
-  description       = var.sg_egress_rules[count.index].description
-  from_port         = var.sg_egress_rules[count.index].from_port
-  to_port           = var.sg_egress_rules[count.index].to_port
+  description       = lookup(var.sg_egress_rules[count.index], "description", null)
   ip_protocol       = var.sg_egress_rules[count.index].ip_protocol
   cidr_ipv4         = var.sg_egress_rules[count.index].cidr_ipv4
+  from_port         = lookup(var.sg_egress_rules[count.index], "from_port", null)
+  to_port           = lookup(var.sg_egress_rules[count.index], "to_port", null)
 }
