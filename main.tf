@@ -67,12 +67,28 @@ resource "aws_vpc_security_group_ingress_rule" "ingress_rules" {
 
 }
 
-resource "aws_vpc_security_group_egress_rule" "egress_rules" {
-  count = length(var.security_group_ids) == 0 ? length(var.sg_egress_rules) : 0
+resource "aws_vpc_security_group_egress_rule" "all_protocols" {
+  for_each = {
+    for k, rule in var.sg_egress_rules :
+    k => rule if rule.ip_protocol == "-1"
+  }
+
   security_group_id = aws_security_group.this[0].id
-  description       = lookup(var.sg_egress_rules[count.index], "description", null)
-  ip_protocol       = var.sg_egress_rules[count.index].ip_protocol
-  cidr_ipv4         = var.sg_egress_rules[count.index].cidr_ipv4
-  from_port         = lookup(var.sg_egress_rules[count.index], "from_port", null)
-  to_port           = lookup(var.sg_egress_rules[count.index], "to_port", null)
+  description       = lookup(each.value, "description", null)
+  ip_protocol       = "-1"
+  cidr_ipv4         = each.value.cidr_ipv4
+}
+
+resource "aws_vpc_security_group_egress_rule" "with_ports" {
+  for_each = {
+    for k, rule in var.sg_egress_rules :
+    k => rule if rule.ip_protocol != "-1"
+  }
+
+  security_group_id = aws_security_group.this[0].id
+  description       = lookup(each.value, "description", null)
+  ip_protocol       = each.value.ip_protocol
+  cidr_ipv4         = each.value.cidr_ipv4
+  from_port         = each.value.from_port
+  to_port           = each.value.to_port
 }
