@@ -59,7 +59,7 @@ resource "aws_security_group" "this" {
 resource "aws_vpc_security_group_ingress_rule" "ingress_rules" {
   count             = length(var.security_group_ids) == 0 ? length(var.sg_ingress_rules) : 0
   security_group_id = aws_security_group.this[0].id
-  description       = var.sg_egress_rules[count.index].description
+  description       = var.sg_ingress_rules[count.index].description
   from_port         = var.sg_ingress_rules[count.index].from_port
   to_port           = var.sg_ingress_rules[count.index].to_port
   ip_protocol       = var.sg_ingress_rules[count.index].ip_protocol
