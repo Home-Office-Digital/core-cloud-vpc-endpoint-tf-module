@@ -117,7 +117,10 @@ jobs:
         set +e
 
         module_name="$(basename "${{ matrix.module }}")"
-        module_slug="$(echo "${{ matrix.module }}" | tr '/' '-')"
+        module_slug="$(echo "${{ matrix.module }}" | sed -E 's#[^A-Za-z0-9._-]+#-#g; s#^-+##; s#-+$##')"
+        if [[ -z "${module_slug}" || "${module_slug}" == "." ]]; then
+          module_slug="root-module"
+        fi
         mkdir -p test-results
 
         terraform -chdir=${{ matrix.module }} test -json \
@@ -150,7 +153,10 @@ jobs:
       id: artifact
       if: always()
       run: |
-        module_slug="$(echo "${{ matrix.module }}" | tr '/' '-')"
+        module_slug="$(echo "${{ matrix.module }}" | sed -E 's#[^A-Za-z0-9._-]+#-#g; s#^-+##; s#-+$##')"
+        if [[ -z "${module_slug}" || "${module_slug}" == "." ]]; then
+          module_slug="root-module"
+        fi
         echo "name=terraform-test-results-${module_slug}" >> "$GITHUB_OUTPUT"
 
     - name: Upload Terraform test results
