@@ -49,8 +49,9 @@ resource "aws_route53_record" "this" {
   }
 }
 
-#checkov:skip=CKV2_AWS_5: Security group is conditionally attached to aws_vpc_endpoint.this via security_group_ids.
 resource "aws_security_group" "this" {
+  #checkov:skip=CKV2_AWS_5: Security group is conditionally attached to aws_vpc_endpoint.this via security_group_ids.
+
   count       = length(var.security_group_ids) == 0 ? 1 : 0
   name        = "${var.vpc_endpoint_name}-sg"
   description = var.sg_description
