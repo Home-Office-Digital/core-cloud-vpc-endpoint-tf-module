@@ -7,6 +7,7 @@ This module includes local Terraform tests under `tests/` using the native Terra
 - Default path behavior: the module creates its own security group and associated rules when `security_group_ids` is empty.
 - Custom DNS path behavior: custom Route53 resources are planned when `custom_private_r53_zone` is provided.
 - Managed private DNS behavior: custom Route53 resources are skipped when `managed_private_dns_enabled` is true.
+- Minimal SG path behavior: a module-created security group uses `sg_description` and creates no SG rules when both SG rule inputs are empty.
 - Basic resource wiring: endpoint type, selected security groups, and tags.
 
 ## Why This Is Safe
@@ -34,6 +35,7 @@ Run a single test file:
 terraform test tests/vpc-endpoint-default-path.tftest.hcl
 terraform test tests/vpc-endpoint-custom-dns.tftest.hcl
 terraform test tests/vpc-endpoint-managed-private-dns.tftest.hcl
+terraform test tests/vpc-endpoint-minimal-sg-path.tftest.hcl
 ```
 
 ## Notes
